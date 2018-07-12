@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+		<title>El tiempo - Saúl Ortega</title>
+	</head>
+	<body>
+		<div class="container">
+			<br>
+			<h3 class="text-center">Bienvenido al servicio de consulta del tiempo</h3>
+			<br>
+			<div class="row">
+				<div class="col-12">
+					<div class="alert alert-danger" role="alert" style="display: none" id="error"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 col-sm-4 col-md-3" style="border: 1px solid silver;">
+					<h5 class="text-center" id="lugar" style="margin-top: 10px;"></h5>
+					<table class="table table-sm">
+						<tbody>
+							<tr>
+								<td class="text-right" width="50%">Temperatura: <i class="fa fa-thermometer-half"></i></td>
+								<td id="clima-temperatura"></td>
+							</tr>
+							<tr>
+								<td class="text-right" width="50%">Viento: <i class="fab fa-cloudversify"></i></td>
+								<td id="clima-viento"></td>
+							</tr>
+							<tr>
+								<td class="text-right" width="50%">Nubes: <i class="fa fa-cloud"></i></td>
+								<td id="clima-nubes"></td>
+							</tr>
+							<tr>
+								<td class="text-right" width="50%">Humedad: <i class="fa fa-tint"></i></td>
+								<td id="clima-humedad"></td>
+							</tr>
+							<tr>
+								<td class="text-right" width="50%">Presión: <i class="fab fa-creative-commons-sampling"></i></td>
+								<td id="clima-presión"></td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					<div>
+						<h6 class="text-center">Obtener el tiempo para:</h6>
+						<div class="form-group">
+							<button class="btn btn-outline-secondary btn-block" type="button" onclick="ubicación.obtener()">Mi ubicación actual</button>
+						</div>
+						<div class="form-group">
+							<!--<label>Por ciudad:</label>-->
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Ciudad:</span>
+								</div>
+								<input type="text" class="form-control" placeholder="Escriba una ciudad" aria-label="Ciudad" aria-describedby="boton-ciudad" id="ciudad" onkeypress="obtCiudadInp(event)">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button" id="boton-ciudad" onclick="obtCiudad()">Ir</button>
+								</div>
+							</div>
+						</div>
+						<div>
+							<p><em>Nota:</em> <span style="font-size: 90%">También puede arrastrar el marcador o hacer clic en cualquier lugar del mapa.</span></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-8 col-md-9" style="padding-right: 0px;">
+					<div id="mapa" style="height: 500px; border: 1px solid silver;"></div>
+				</div>
+			</div>
+			<br>
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Información:</h5>
+					<p class="card-text">Esta página es un desarrollo de muestra realizado por Saúl Ortega.</p>
+					<p class="card-text">Tecnologías utilizadas:</p>
+					<ul>
+						<li>API REST (JSON) de <a href="https://cloud.google.com/maps-platform/maps/?hl=es" target="_blank">Google Maps</a></li>
+						<li>API REST (JSON) de <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></li>
+						<li>Biblioteca <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a></li>
+						<li>AJAX mediante <a href="https://github.com/axios/axios" target="_blank">Axios</a></li>
+						<li>Íconos de <a href="https://fontawesome.com/" target="_blank">FontAwesome</a></li>
+						<li>Javascript puro, sin frameworks</li>
+					</ul>
+					<p>Mi perfil en GitHub: <a href="https://github.com/saulortega" target="_blank">https://github.com/saulortega</a>.</p>
+				</div>
+			</div>
+			<br>
+		</div>
+
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDwQ00z6GFUwxWiSGTbVogFH3bPOQfHlqA&callback=iniciarMapa"></script>
+		<script src="js/funciones.js"></script>
+	</body>
+</html>
